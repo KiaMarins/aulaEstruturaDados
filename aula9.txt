@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+typedef struct no
+{
+	int chave;
+	struct no * prox;
+}TNo;
+
+TNo *alocaNo(int k);
+void insereInicio(TNo **pprim, int k); //k=valor armazena dentro no no
+void imprimir(TNo * paux);
+void removerInicio(TNo **prim);
+void removerTudo (TNo **prim);
+void inserirFinal(TNo **pprim, int k);
+
+int main ()
+{
+	TNo *prim=NULL;
+
+	insereInicio(&prim, 15);
+
+	insereInicio(&prim, 16);
+	insereInicio(&prim, 17);
+	imprimir(prim);
+	removerInicio(&prim);
+	printf(" removeu \n" );
+	imprimir(prim);
+
+
+
+	return 0;
+
+}
+
+TNo *alocaNo(int k)
+{
+	TNo *novo=NULL;
+	novo = (TNo *)malloc(sizeof(TNo));
+	if(novo) //se novo != NULL
+	{
+		novo->chave = k;
+		novo->prox = NULL;
+	}
+
+	return novo;
+}
+
+void insereInicio(TNo **pprim, int k)
+{;
+
+	TNo *novo = NULL;
+	novo = alocaNo(k);
+	if(novo == NULL) return;
+
+	novo->prox = *pprim;
+	*pprim = novo;
+
+}
+
+void imprimir(TNo * paux)
+{
+	while(paux != NULL)
+	{
+		printf("\n%d", paux->chave );
+		printf("\n%p", paux);
+		paux = paux->prox;
+	}
+
+}
+
+void removerInicio(TNo **prim)
+{
+	TNo *paux= *prim;
+	if(paux)
+	{
+		*prim = (*prim)->prox;
+		free(paux);
+		paux=NULL; // não precisa pq a variavel he local, mas ela quis
+	}
+}
+
+void removerTudo (TNo **prim)
+{
+	while(*prim)
+	{
+		removerInicio(prim);
+	}
+
+}
+
+//nao achei o erro
+void inserirFinal(TNo **pprim, int k)
+{
+	TNo *paux = *pprim, novo=NULL;
+	if(**pprim = NULL)
+	{
+		insereInicio(pprim, k);
+		return;
+	}
+
+	else 
+	{
+		while(paux->prox != NULL)
+			paux=paux->prox;
+			
+		novo=alocaNo(k);
+			if(novo)
+				paux->prox = novo;
+	}
+}
