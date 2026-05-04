@@ -1,142 +1,86 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct no{
-    int chave;
-    //campos
-    struct no *prox;
+	int chave;
+	struct no *prox;
 }TNo;
 
-TNo *alocaNo(int k);
-void insereInicio(TNo **pprim, int k);
-void imprimir(TNo *paux);
-void removerInicio(TNo **prim);
-void removerTodos(TNo **prim);
-void inserirFinal(TNo **pprim, int k);
-TNo* buscar(TNo *paux, int chave);
-TNo* criarListaPar(TNo * paux);
+typedef struct nocabeca{
+	int cont;
+	TNo *prim; //olha pro no cabeça
+	TNo * ult;
+}TNoCabeca;
 
-int main()
+void insereFinal(TNoCabeca *paux, int k)
 {
-    TNo *prim=NULL, *buscado=NULL;
-    insereInicio(&prim, 15);
-    insereInicio(&prim, 62);
-    insereInicio(&prim, 46);
-    inserirFinal(&prim,111);
-    
-    printf("\nBuscado 62: %p", buscar(prim, 62));
-    TNo *listaPar = criarListaPar(prim);
-    printf("\nLista par: ");
-    imprimir(listaPar);
-    printf("\nFinal lista par");
-    //printf("\n%d", prim->chave);
-    imprimir(prim);
-    removerInicio(&prim);
-    printf("\n----------------");
-    imprimir(prim);
-/*    while(prim)
-//        removerInicio(&prim);
-    removerTodos(&prim);
-    printf("\n----------------");
-    imprimir(prim);
-//    insereInicio(&prim, 99);
-//    imprimir(prim);*/
-
+	Tno *novo=NULL, *ultimo = paux->ultimo;
+	novo = alocaNo(k);
+	if(novo)
+	{ //tb serve: paux -> ult -> prox = novo;
+		ultimo -> prox=novo;
+		paux->ult = novo;
+		paux -> cont = paux -> cont + 1;
+	}
 }
 
-void removerTodos(TNo **prim)
-{
-    while(*prim)
-        removerInicio(prim);
+TNoCabeca *criaLista(){
+
+	TNoCabeca*novo = NULL;
+	novo = (TNoCabeca *)malloc(sizeof(TNoCabeca));
+	if(novo)
+	{
+		novo-> cont = 0;
+		novo -> prim = NULL;
+		novo-> ult NULL;
+	}
 }
 
-void inserirFinal(TNo **pprim, int k)
+void insereInicio(TNoCabeca *paux, int k)
 {
-    TNo *paux=*pprim, *novo=NULL;
-    if(*pprim==NULL) //lista vazia
-    {
-       insereInicio(pprim,k);
-       return;
-    }
-    else
-    {
-        while(paux->prox!=NULL)
-        {
-           paux=paux->prox;
-        }
-        novo=alocaNo(k);
-        if(novo)
-        {
-            paux->prox = novo;
-        }
-    }
+	TNo *novo=NULL;
+	novo = alocaNo(k);
+	if(novo)
+	{
+		novo -> prox = paux->prim;
+		if(paux->ult==NULL)
+			paux->ult = novo;
+		paux->cont = paux->cont + 1;
+	}
 
-}
-
-void removerInicio(TNo **prim)
-{
-    TNo *paux=*prim;
-    if(paux) //if(paux!=NULL)
-    {
-        *prim = (*prim)->prox;
-        free(paux);
-        paux=NULL;
-    }
-}
-
-void imprimir(TNo *paux)
-{
-   if(paux == NULL)
-      printf("\nLista vazia!");
-   while(paux!=NULL)
-   {
-      printf("\n%p %d", paux, paux->chave);
-      paux = paux->prox;
-   }
 }
 
 TNo *alocaNo(int k)
 {
-   TNo *novo=NULL;
-   novo = (TNo *)malloc(sizeof(TNo));
-   if(novo) //if (novo!=NULL
+	TNo *novo = NULL;
+	novo = (TNo *)malloc(sizeof(TNo));
+	if(novo)
+	{
+		novo -> chave;
+		novo -> prox = *prox;
+	}
+}
+
+void imprimir(TNoCabeca *paux)
+{
+	TNo *paux2 = paux->prim;
+   if(paux2 == NULL)
+      printf("\nLista vazia!");
+   while(paux2 != NULL)
    {
-       novo->chave = k;
-       novo->prox = NULL;
+      printf("\n %d"paux2->chave);
+      paux2 = paux2->prim;
    }
-   return novo;
-}
-void insereInicio(TNo **pprim, int k)
-{
-    TNo *novo=NULL;
-    novo = alocaNo(k);
-    if (novo == NULL) return;
-    novo->prox = *pprim;
-    *pprim = novo;
 }
 
-TNo* buscar(TNo *paux, int chave)
+int main ()
 {
-  while(paux!=NULL)
-   {
-      if(paux->chave == chave)
-        return paux;
-      paux = paux->prox;
-   }
-   return NULL;
-}
+	TNoCabeca *prim = criaLista();
+	insereInicio(prim, 7);
+	insereInicio(prim, 12);
+	insereInicio(prim, 46);
+	insereFinal(prim, 22);
+	imprimir(prim);
 
-
-TNo* criarListaPar(TNo * paux)
-{
-  TNo *ppar = NULL;
-  while(paux)
-  {
-    if(paux->chave%2 == 0)
-    {
-      insereInicio(&ppar, paux->chave);
-    }
-    paux = paux->prox;
-  }
-  return ppar;
+	return 0;
 }
