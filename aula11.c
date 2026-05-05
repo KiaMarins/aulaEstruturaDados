@@ -6,6 +6,11 @@ typedef struct no{
 	struct no *prox;
 }TNo;
 
+void removerElem(TNo **p, int k)
+{
+	TNo
+}
+
 TNo *alocaNo(int k)
 {
 	TNo *novo = NULL;
